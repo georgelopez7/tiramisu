@@ -1,13 +1,20 @@
-// Validate Webhook Signature - validate the webhook signature
+import crypto from "crypto";
+
+export const ERR_WEBHOOK_SECRET_NOT_DEFINED = "Webhook secret is not defined";
+export const ERR_WEBHOOK_OUTDATED =
+  "Webhook is outdated. Please send webhook again.";
+export const ERR_INVALID_WEBHOOK_SIGNATURE = "Invalid webhook signature.";
+
+// ValidateWebhookSignature - validate the webhook signature
 export const ValidateWebhookSignature = (
   signature: string,
   payload: string,
   timestamp: number,
-  timeSkew: number = 60 * 5 // 5 minutes
-): boolean => {
-  const secret = process.env.WEBHOOK_SECRET;
+  timeSkew: number,
+  secret: string
+): string | null => {
   if (!secret) {
-    return false;
+    return ERR_WEBHOOK_SECRET_NOT_DEFINED;
   }
 
   // Unix timestamp in seconds
@@ -15,16 +22,16 @@ export const ValidateWebhookSignature = (
   const timeDiff = now - timestamp;
 
   if (timeDiff > timeSkew) {
-    return false;
+    return ERR_WEBHOOK_OUTDATED;
   }
 
-  const hasher = new Bun.CryptoHasher("sha256", secret);
+  const hasher = crypto.createHmac("sha256", secret);
   hasher.update(timestamp + "." + payload);
   const expectedSignature = hasher.digest("hex");
 
   if (signature !== expectedSignature) {
-    return false;
+    return ERR_INVALID_WEBHOOK_SIGNATURE;
   }
 
-  return true;
+  return null;
 };

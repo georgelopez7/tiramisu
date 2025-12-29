@@ -6,7 +6,7 @@ async function handler(request: NextRequest) {
   try {
     const url = new URL(request.url);
 
-    const ip = request.ip || "unknown";
+    const ip = request.headers.get("X-Forwarded-For") || "unknown";
 
     let payload = "";
     payload = await request.text();

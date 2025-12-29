@@ -9,14 +9,18 @@
     "lint": "bun run --bun next lint",
     "test": "bun test",
     "drizzle:generate": "drizzle-kit generate",
-    "drizzle:migrate": "drizzle-kit migrate"
+    "drizzle:migrate": "drizzle-kit migrate",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
+    "@storybook/nextjs": "^10.1.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.562.0",
@@ -39,6 +43,10 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "storybook": "^10.1.11",
+    "@storybook/nextjs-vite": "^10.1.11",
+    "vite": "^7.3.0",
+    "eslint-plugin-storybook": "^10.1.11"
   }
 }

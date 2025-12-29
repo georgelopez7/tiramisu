@@ -4,6 +4,7 @@ import RequestMethodLabel from "@/components/request-method-label/request-method
 import RequestPayloadBlock from "@/components/request-payload-block/request-payload-block";
 import Spacer from "@/components/spacer/spacer";
 import { GetRequestByID } from "@/repository/repository";
+import { GetGeoLocation } from "@/service/ip.service";
 
 interface IPageProps {
   params: {
@@ -19,10 +20,17 @@ const Page = async ({ params }: IPageProps) => {
     return <p>Request not found</p>;
   }
 
+  const geoLocation = await GetGeoLocation(request.ip);
+
   return (
     <PageLayout>
       <div className="w-full">
-        <p className="text-xs">Request ID: {params.id}</p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs">Request ID: {params.id}</p>
+          <p className="text-xs">
+            IP: {request.ip} | {geoLocation.data?.country}
+          </p>
+        </div>
         <Spacer size="small" />
         <div className="flex items-center rounded-md px-4 py-2 border gap-2">
           <RequestMethodLabel method={request.method} />
@@ -32,8 +40,6 @@ const Page = async ({ params }: IPageProps) => {
         <RequestHeadersBlock headers={request.headers ?? []} />
         <Spacer size="small" />
         <RequestPayloadBlock payload={request.payload} />
-        <Spacer size="small" />
-        {/* <WebhookModal text="Validate" /> */}
       </div>
     </PageLayout>
   );

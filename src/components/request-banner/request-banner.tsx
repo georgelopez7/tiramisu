@@ -12,7 +12,7 @@ const RequestBanner = ({ request }: IRequestBannerProps) => {
   return (
     <Link
       href={`/requests/${request.id}`}
-      className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-100"
+      className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent hover:text-accent-foreground"
     >
       <RequestMethodLabel method={request.method} />
       <p>{request.path}</p>
