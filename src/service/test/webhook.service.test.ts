@@ -1,41 +1,64 @@
-import { ValidateWebhookSignature } from "../webhook.service";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import {
+  ERR_INVALID_WEBHOOK_SIGNATURE,
+  ERR_WEBHOOK_OUTDATED,
+  ERR_WEBHOOK_SECRET_NOT_DEFINED,
+  ValidateWebhookSignature,
+} from "../webhook.service";
+
+// CONSTANTS
+const secret = "123456789";
+const timestamp = Math.floor(new Date().getTime() / 1000);
+const payload = "{key: 'value'}";
+const timeSkew = 60 * 5;
+
+const hasher = new Bun.CryptoHasher("sha256", secret);
+hasher.update(timestamp + "." + payload);
+const signature = hasher.digest("hex");
 
 describe("TestService_ValidateWebhookSignature", () => {
-  const mockSecret = "secret";
-  process.env.WEBHOOK_SECRET = mockSecret;
-
-  const mockPayload = '{"id": 1}';
-  const mockTimestamp = Date.now() / 1000;
-
-  const hasher = new Bun.CryptoHasher("sha256", mockSecret);
-  hasher.update(mockTimestamp + "." + mockPayload);
-  const mockSignature = hasher.digest("hex");
-
-  test("should return true if signature is valid", async () => {
-    const result = await ValidateWebhookSignature(
-      mockSignature,
-      mockPayload,
-      mockTimestamp
+  test("should return no error if signature is valid", async () => {
+    const err = ValidateWebhookSignature(
+      signature,
+      payload,
+      timestamp,
+      timeSkew,
+      secret
     );
-    expect(result).toBe(true);
+    expect(err).toBe(null);
   });
 
-  test("should return false if signature is invalid", async () => {
-    const result = await ValidateWebhookSignature(
-      "invalid",
-      mockPayload,
-      mockTimestamp
+  test("should return error if secret is not defined", async () => {
+    const err = ValidateWebhookSignature(
+      signature,
+      payload,
+      timestamp,
+      timeSkew,
+      ""
     );
-    expect(result).toBe(false);
+    expect(err).toBe(ERR_WEBHOOK_SECRET_NOT_DEFINED);
   });
 
-  test("should return false if timestamp is too old", async () => {
-    const result = await ValidateWebhookSignature(
-      mockSignature,
-      mockPayload,
-      1234567890,
-      0
+  test("should return error if webhook is outdated", async () => {
+    const err = ValidateWebhookSignature(
+      signature,
+      payload,
+      timestamp - timeSkew * 2,
+      timeSkew,
+      secret
     );
-    expect(result).toBe(false);
+    expect(err).toBe(ERR_WEBHOOK_OUTDATED);
+  });
+
+  test("should return error if signature is invalid", async () => {
+    const err = ValidateWebhookSignature(
+      "invalid-signature",
+      payload,
+      timestamp,
+      timeSkew,
+      secret
+    );
+    expect(err).toBe(ERR_INVALID_WEBHOOK_SIGNATURE);
   });
 });

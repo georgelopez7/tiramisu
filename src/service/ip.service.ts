@@ -15,14 +15,13 @@ export const GetGeoLocation = async (
         ip: ip,
         city: "",
         region: "",
-        country: "localhost",
+        country: "",
       },
       error: null,
     };
   }
 
   const response = await fetch(`https://ipapi.co/${ip}/json/`);
-
   if (!response.ok) {
     return {
       data: null,
@@ -31,6 +30,13 @@ export const GetGeoLocation = async (
   }
 
   const data = await response.json();
+  if (data.error) {
+    return {
+      data: null,
+      error: "Invalid IP address",
+    };
+  }
+
   const geoLocationData = {
     ip: data.ip,
     city: data.city,
