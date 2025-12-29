@@ -1,10 +1,11 @@
 import ToggleThemeButton from "@/components/toggle-theme-button/toggle-theme-button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
     <div className="w-full flex justify-between items-center">
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <Image
           src="/tiramisu-logo.png"
           alt="Tiramisu Logo"
@@ -12,7 +13,7 @@ const Navbar = () => {
           height={40}
         />
         <h1 className="text-2xl font-bold">Tiramisu</h1>
-      </div>
+      </Link>
       <ToggleThemeButton />
     </div>
   );

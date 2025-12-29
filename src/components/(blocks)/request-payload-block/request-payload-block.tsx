@@ -1,5 +1,5 @@
 import React from "react";
-import Spacer from "../spacer/spacer";
+import Spacer from "@/components/spacer/spacer";
 
 interface RequestPayloadBlockProps {
   payload: string;

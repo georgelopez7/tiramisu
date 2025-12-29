@@ -1,13 +1,15 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 interface ICopyToClipboardProps {
+  className?: string;
   text: string;
 }
 
-const CopyToClipboard = ({ text }: ICopyToClipboardProps) => {
+const CopyToClipboard = ({ className, text }: ICopyToClipboardProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -17,9 +19,10 @@ const CopyToClipboard = ({ text }: ICopyToClipboardProps) => {
       setCopied(false);
     }, 800);
   };
+
   return (
     <button
-      className="bg-transparent disabled:opacity-40"
+      className={cn("bg-transparent disabled:opacity-40", className)}
       onClick={handleCopy}
       disabled={copied}
     >

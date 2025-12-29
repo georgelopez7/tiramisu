@@ -1,10 +1,15 @@
 import PageLayout from "@/components/page-layout/page-layout";
-import RequestHeadersBlock from "@/components/request-headers-block/request-headers-block";
+import RequestHeadersBlock from "@/components/(blocks)/request-headers-block/request-headers-block";
 import RequestMethodLabel from "@/components/request-method-label/request-method-label";
-import RequestPayloadBlock from "@/components/request-payload-block/request-payload-block";
+import RequestPayloadBlock from "@/components/(blocks)/request-payload-block/request-payload-block";
 import Spacer from "@/components/spacer/spacer";
+import WebhookSignatureBlock from "@/components/(blocks)/webhook-signature-block/webhook-signature-block";
 import { GetRequestByID } from "@/repository/repository";
 import { GetGeoLocation } from "@/service/ip.service";
+import {
+  GetRequestSignature,
+  GetRequestTimestamp,
+} from "@/service/request.service";
 
 interface IPageProps {
   params: {
@@ -20,7 +25,20 @@ const Page = async ({ params }: IPageProps) => {
     return <p>Request not found</p>;
   }
 
+  // GEOLOCATION
   const geoLocation = await GetGeoLocation(request.ip);
+
+  // WEBHOOK SETTINGS
+  const secret = process.env.WEBHOOK_SECRET ?? "";
+  const { timestamp } = GetRequestTimestamp(
+    request.headers ?? [],
+    process.env.TIMESTAMP_HEADER ?? ""
+  );
+
+  const { signature } = GetRequestSignature(
+    request.headers ?? [],
+    process.env.SIGNATURE_HEADER ?? ""
+  );
 
   return (
     <PageLayout>
@@ -28,7 +46,7 @@ const Page = async ({ params }: IPageProps) => {
         <div className="flex items-center justify-between">
           <p className="text-xs">Request ID: {params.id}</p>
           <p className="text-xs">
-            IP: {request.ip} | {geoLocation.data?.country}
+            IP Address: {request.ip} | {geoLocation.data?.country}
           </p>
         </div>
         <Spacer size="small" />
@@ -36,10 +54,17 @@ const Page = async ({ params }: IPageProps) => {
           <RequestMethodLabel method={request.method} />
           <p>{request.path}</p>
         </div>
-        <Spacer size="medium" />
+        <Spacer size="small" />
         <RequestHeadersBlock headers={request.headers ?? []} />
         <Spacer size="small" />
         <RequestPayloadBlock payload={request.payload} />
+        <Spacer size="small" />
+        <WebhookSignatureBlock
+          signature={signature}
+          timestamp={timestamp}
+          payload={request.payload}
+          secret={secret}
+        />
       </div>
     </PageLayout>
   );

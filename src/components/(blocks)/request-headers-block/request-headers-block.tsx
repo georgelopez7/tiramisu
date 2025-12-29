@@ -3,8 +3,9 @@
 import { IRequestHeader } from "@/domain/request";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import { Badge } from "../ui/badge";
-import Spacer from "../spacer/spacer";
+import { Badge } from "@/components/ui/badge";
+import Spacer from "@/components/spacer/spacer";
+import CopyToClipboard from "@/components/(buttons)/copy-to-clipboard/copy-to-clipboard";
 
 interface IRequestHeadersBlockProps {
   headers: IRequestHeader[];
@@ -17,7 +18,7 @@ const RequestHeadersBlock = ({ headers }: IRequestHeadersBlockProps) => {
       <div className="flex items-center justify-between">
         <p className="text-md font-medium">Headers</p>
         <button
-          className="border rounded-md p-1 hover:bg-gray-100"
+          className="border rounded-md p-1 hover:bg-accent"
           onClick={() => setShow(!show)}
         >
           {show ? (
@@ -29,21 +30,27 @@ const RequestHeadersBlock = ({ headers }: IRequestHeadersBlockProps) => {
       </div>
       {show && (
         <div className="flex flex-col">
-          <Spacer size="xsmall" />
+          <Spacer size="small" />
           <div className="max-h-[300px] overflow-y-auto">
-            {headers.map((header) => (
+            {headers.map((header, index) => (
               <div key={header.key}>
-                <Badge
-                  variant="secondary"
-                  className="font-mono text-xs font-medium"
-                >
-                  {header.key}
-                </Badge>
+                <div className="flex items-center justify-between">
+                  <Badge
+                    variant="secondary"
+                    className="font-mono text-xs font-medium"
+                  >
+                    {header.key}
+                  </Badge>
+                  <CopyToClipboard
+                    className="mr-8"
+                    text={`${header.key}: ${header.value}`}
+                  />
+                </div>
                 <Spacer size="small" />
                 <div className="font-mono text-sm leading-relaxed text-foreground/90">
                   {header.value}
                 </div>
-                <hr className="my-3" />
+                {index !== headers.length - 1 && <hr className="my-3" />}
               </div>
             ))}
           </div>
