@@ -10,7 +10,6 @@ const meta: Meta<typeof SignatureModal> = {
 export default meta;
 type Story = StoryObj<typeof SignatureModal>;
 
-// CONSTANTS
 const secret = "123456789";
 const text = "Validate Signature";
 const timestamp = Math.floor(new Date().getTime() / 1000);
