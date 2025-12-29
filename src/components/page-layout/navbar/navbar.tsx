@@ -1,15 +1,12 @@
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import ToggleThemeButton from "@/components/toggle-theme-button/toggle-theme-button";
 
 const Navbar = () => {
   return (
     <div className="w-full flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Tiramisu</h1>
-        <Button variant="outline">
-            Get Started
-        </Button>
+      <h1 className="text-xl font-semibold">Tiramisu</h1>
+      <ToggleThemeButton />
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
