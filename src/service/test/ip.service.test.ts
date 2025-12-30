@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import { GetGeoLocation } from "../ip.service";
 
 describe("TestService_GetGeoLocation", () => {
