@@ -18,3 +18,10 @@ export const headersTable = sqliteTable("headers", {
   value: text().notNull(),
   request_id: int().references(() => requestsTable.id, { onDelete: "cascade" }),
 });
+
+export const requestParamsTable = sqliteTable("request_params", {
+  id: int().primaryKey({ autoIncrement: true }),
+  key: text().notNull(),
+  value: text().notNull(),
+  request_id: int().references(() => requestsTable.id, { onDelete: "cascade" }),
+});

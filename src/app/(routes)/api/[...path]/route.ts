@@ -1,4 +1,4 @@
-import { IRequestHeader } from "@/domain/request";
+import { IRequestHeader, IRequestParam } from "@/domain/request";
 import { AddRequest } from "@/service/request.service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,12 +18,21 @@ async function handler(request: NextRequest) {
       })
     );
 
+    const params = Array.from(url.searchParams.entries()).map(
+      ([key, value]) => ({
+        key,
+        value,
+      })
+    );
+
+    console.log("URL: ", url.search);
     const record = {
       method: request.method,
-      path: url.pathname,
+      path: url.pathname + url.search,
       ip: ip,
       payload: payload,
       headers: headers as IRequestHeader[],
+      params: params as IRequestParam[],
     };
 
     await AddRequest(record);

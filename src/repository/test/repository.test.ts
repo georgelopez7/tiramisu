@@ -5,14 +5,14 @@ import {
   GetRequests,
   ResetRequestsTable,
 } from "../repository";
-import { IRequest } from "@/domain/request";
+import { IRequest, IRequestHeader } from "@/domain/request";
 
 describe("TestRepository_AddRequest", () => {
   beforeEach(async () => {
     await ResetRequestsTable();
   });
 
-  test("should insert a request without headers and return the RequestID", async () => {
+  test("should insert a request without headers and without params and return the RequestID", async () => {
     const request = {
       method: "GET",
       path: "/api/test",
@@ -70,6 +70,41 @@ describe("TestRepository_AddRequest", () => {
       result.headers!.find((header) => header.key === "Authorization")!.value
     ).toBe("Bearer token");
   });
+
+  test("should insert a request with params and return the RequestID", async () => {
+    const request = {
+      method: "POST",
+      path: "/api/test2",
+      ip: "192.168.1.2",
+      payload: '{"test": "data2"}',
+      params: [
+        { key: "limit", value: "10" },
+        { key: "offset", value: "10" },
+      ],
+    } as IRequest;
+
+    const requestID = await AddRequest(request);
+    const result = (await GetRequestByID(requestID)) as IRequest;
+
+    expect(result.id).toBeDefined();
+    expect(result.method).toBe(request.method);
+    expect(result.path).toBe(request.path);
+    expect(result.ip).toBe(request.ip);
+    expect(result.payload).toBe(request.payload);
+
+    expect(result.params!.length).toBe(2);
+    result.params!.forEach((header) => {
+      expect(header.id).toBeDefined();
+    });
+
+    expect(result.params!.find((header) => header.key === "limit")!.value).toBe(
+      "10"
+    );
+
+    expect(
+      result.params!.find((header) => header.key === "offset")!.value
+    ).toBe("10");
+  });
 });
 
 describe("TestRepository_GetRequests", () => {
@@ -101,11 +136,25 @@ describe("TestRepository_GetRequests", () => {
 
     await AddRequest(request2);
 
+    const request3 = {
+      method: "PUT",
+      path: "/api/test3",
+      ip: "192.168.1.2",
+      payload: '{"test": "data2"}',
+      params: [
+        { key: "limit", value: "10" },
+        { key: "offset", value: "10" },
+      ],
+    } as IRequest;
+
+    await AddRequest(request3);
+
     const results = await GetRequests();
     const req1 = results.find((r) => r.path === "/api/test1");
     const req2 = results.find((r) => r.path === "/api/test2");
+    const req3 = results.find((r) => r.path === "/api/test3");
 
-    expect(results.length).toBe(2);
+    expect(results.length).toBe(3);
 
     expect(req1).toBeDefined();
     expect(req1!.method).toBe(request1.method);
@@ -121,6 +170,16 @@ describe("TestRepository_GetRequests", () => {
     );
     expect(req2!.headers!.map((header) => header.value)).toEqual(
       expect.arrayContaining(["application/json", "Bearer token"])
+    );
+
+    expect(req3).toBeDefined();
+    expect(req3!.method).toBe(request3.method);
+    expect(req3!.params!.length).toBe(2);
+    expect(req3!.params!.map((param) => param.key)).toEqual(
+      expect.arrayContaining(["limit", "offset"])
+    );
+    expect(req3!.params!.map((param) => param.value)).toEqual(
+      expect.arrayContaining(["10", "10"])
     );
   });
 
@@ -165,7 +224,88 @@ describe("TestRepository_GetRequestByID", () => {
     expect(result.created_at).toBeDefined();
   });
 
-  test("should return request without headers by id", async () => {
+  test("should return request with params by id", async () => {
+    const request = {
+      method: "POST",
+      path: "/api/test",
+      ip: "192.168.1.1",
+      payload: '{"data": "test"}',
+      headers: [] as IRequestHeader[],
+      params: [
+        { key: "limit", value: "10" },
+        { key: "offset", value: "10" },
+      ],
+    } as IRequest;
+
+    const requestID = await AddRequest(request);
+    const result = (await GetRequestByID(requestID)) as IRequest;
+
+    expect(result.id).toBe(requestID);
+    expect(result.method).toBe(request.method);
+    expect(result.path).toBe(request.path);
+    expect(result.ip).toBe(request.ip);
+    expect(result.payload).toBe(request.payload);
+    expect(result.params!.length).toBe(2);
+    expect(result.params!.map((param) => param.key)).toEqual(
+      expect.arrayContaining(["limit", "offset"])
+    );
+    expect(result.params!.map((param) => param.value)).toEqual(
+      expect.arrayContaining(["10", "10"])
+    );
+  });
+
+  test("should return request with headers and params by id", async () => {
+    const request = {
+      method: "POST",
+      path: "/api/test2",
+      ip: "192.168.1.2",
+      payload: '{"test": "data2"}',
+      headers: [
+        { key: "Content-Type", value: "application/json" },
+        { key: "Authorization", value: "Bearer token" },
+      ],
+      params: [
+        { key: "limit", value: "10" },
+        { key: "offset", value: "10" },
+      ],
+    } as IRequest;
+
+    const requestID = await AddRequest(request);
+    const result = (await GetRequestByID(requestID)) as IRequest;
+
+    expect(result.id).toBe(requestID);
+    expect(result.method).toBe(request.method);
+    expect(result.path).toBe(request.path);
+    expect(result.ip).toBe(request.ip);
+    expect(result.payload).toBe(request.payload);
+
+    expect(result.headers!.length).toBe(2);
+    result.headers!.forEach((header) => {
+      expect(header.id).toBeDefined();
+    });
+
+    expect(
+      result.headers!.find((header) => header.key === "Content-Type")!.value
+    ).toBe("application/json");
+    expect(
+      result.headers!.find((header) => header.key === "Authorization")!.value
+    ).toBe("Bearer token");
+
+    expect(result.params!.length).toBe(2);
+    result.params!.forEach((header) => {
+      expect(header.id).toBeDefined();
+    });
+
+    expect(result.params!.find((header) => header.key === "limit")!.value).toBe(
+      "10"
+    );
+
+    expect(
+      result.params!.find((header) => header.key === "offset")!.value
+    ).toBe("10");
+  });
+
+  test("should return request without headers or params by id", async () => {
     const request = {
       method: "GET",
       path: "/api/test",

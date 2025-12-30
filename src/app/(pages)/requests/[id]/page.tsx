@@ -11,6 +11,7 @@ import {
 } from "@/service/request.service";
 import IPBadge from "@/components/(badges)/ip-badge/ip-badge";
 import RequestMethodBadge from "@/components/(badges)/request-method-badge/request-method-badge";
+import RequestParamsBlock from "@/components/(blocks)/request-params-block/request-params-block";
 
 interface IPageProps {
   params: {
@@ -58,6 +59,8 @@ const Page = async ({ params }: IPageProps) => {
         </div>
         <Spacer size="small" />
         <RequestHeadersBlock headers={request.headers ?? []} />
+        <Spacer size="small" />
+        <RequestParamsBlock params={request.params ?? []} />
         <Spacer size="small" />
         <RequestPayloadBlock payload={request.payload} />
         <Spacer size="small" />

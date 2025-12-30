@@ -15,6 +15,13 @@
       "when": 1767118300665,
       "tag": "0001_wooden_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1767118819870,
+      "tag": "0002_past_magus",
+      "breakpoints": true
     }
   ]
 }
