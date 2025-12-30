@@ -15,20 +15,10 @@ const request = {
   ],
 } as IRequest;
 
-const mockAddRequest = mock(() =>
-  Promise.resolve({
-    id: 123,
-    ...request,
-    headers: [
-      {
-        key: "Content-Type",
-        value: "application/json",
-        request_id: 123,
-      },
-    ],
-  } as IRequest)
-);
+// mockAddRequest - mock AddRequest function
+const mockAddRequest = mock(() => Promise.resolve(123));
 
+// mockGetRequests - mock GetRequests function
 const mockGetRequests = mock(() =>
   Promise.resolve([
     {
@@ -39,6 +29,7 @@ const mockGetRequests = mock(() =>
       payload: "test",
       headers: [
         {
+          id: 123,
           key: "Content-Type",
           value: "application/json",
           request_id: 123,
@@ -54,19 +45,8 @@ describe("TestService_AddRequest", () => {
   }));
 
   test("should add request", async () => {
-    const result = await AddRequest(request);
-    expect(result.id).toBe(123);
-    expect(result.method).toBe(request.method);
-    expect(result.path).toBe(request.path);
-    expect(result.ip).toBe(request.ip);
-    expect(result.payload).toBe(request.payload);
-    expect(result.headers).toEqual([
-      {
-        key: "Content-Type",
-        value: "application/json",
-        request_id: 123,
-      },
-    ]);
+    const requestID = await AddRequest(request);
+    expect(requestID).toBe(123);
   });
 });
 
@@ -86,6 +66,7 @@ describe("TestService_GetRequests", () => {
         payload: "test",
         headers: [
           {
+            id: 123,
             key: "Content-Type",
             value: "application/json",
             request_id: 123,
