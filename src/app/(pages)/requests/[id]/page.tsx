@@ -10,6 +10,7 @@ import {
   GetRequestSignature,
   GetRequestTimestamp,
 } from "@/service/request.service";
+import IPBadge from "@/components/(badges)/ip-badge/ip-badge";
 
 interface IPageProps {
   params: {
@@ -45,9 +46,7 @@ const Page = async ({ params }: IPageProps) => {
       <div className="w-full">
         <div className="flex items-center justify-between">
           <p className="text-xs">Request ID: {params.id}</p>
-          <p className="text-xs">
-            IP Address: {request.ip} | {geoLocation.data?.country}
-          </p>
+          {geoLocation.data && <IPBadge geolocation={geoLocation.data} />}
         </div>
         <Spacer size="small" />
         <div className="flex items-center rounded-md px-4 py-2 border gap-2">
@@ -59,12 +58,14 @@ const Page = async ({ params }: IPageProps) => {
         <Spacer size="small" />
         <RequestPayloadBlock payload={request.payload} />
         <Spacer size="small" />
-        <WebhookSignatureBlock
-          signature={signature}
-          timestamp={timestamp}
-          payload={request.payload}
-          secret={secret}
-        />
+        {secret && timestamp && (
+          <WebhookSignatureBlock
+            signature={signature}
+            timestamp={timestamp}
+            payload={request.payload}
+            secret={secret}
+          />
+        )}
       </div>
     </PageLayout>
   );
