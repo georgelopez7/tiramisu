@@ -9,7 +9,7 @@
     "lint": "bun run --bun next lint",
     "test": "bun test",
     "drizzle:generate": "drizzle-kit generate",
-    "drizzle:migrate": "drizzle-kit migrate -y",
+    "drizzle:migrate": "drizzle-kit migrate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
