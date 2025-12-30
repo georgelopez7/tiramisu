@@ -7,6 +7,10 @@ import {
 } from "../repository";
 
 describe("TestRepository_AddRequest", () => {
+  beforeEach(async () => {
+    await ResetRequestsTable();
+  });
+
   test("should insert a request without headers and return it", async () => {
     const request = {
       method: "GET",
