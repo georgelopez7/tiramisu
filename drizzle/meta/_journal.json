@@ -8,6 +8,13 @@
       "when": 1766791471089,
       "tag": "0000_violet_bromley",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1767118300665,
+      "tag": "0001_wooden_beast",
+      "breakpoints": true
     }
   ]
 }

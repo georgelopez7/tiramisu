@@ -5,6 +5,7 @@ export interface IRequest {
   ip: string;
   payload: string;
   headers?: IRequestHeader[];
+  created_at?: string;
 }
 
 export interface IRequestHeader {

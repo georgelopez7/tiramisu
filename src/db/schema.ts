@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const requestsTable = sqliteTable("requests", {
@@ -6,6 +7,9 @@ export const requestsTable = sqliteTable("requests", {
   path: text().notNull(),
   ip: text().notNull(),
   payload: text().notNull(),
+  created_at: text()
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .notNull(),
 });
 
 export const headersTable = sqliteTable("headers", {

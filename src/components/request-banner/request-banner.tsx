@@ -12,11 +12,20 @@ const RequestBanner = ({ request }: IRequestBannerProps) => {
   return (
     <Link
       href={`/requests/${request.id}`}
-      className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent hover:text-accent-foreground"
+      className="flex items-center justify-between gap-2 px-3 py-2 border rounded-lg hover:bg-accent hover:text-accent-foreground"
     >
-      <RequestMethodBadge method={request.method} />
-      <p>{request.path}</p>
-      <ArrowUpRight className="size-4 ml-auto" />
+      <div>
+        <div className="flex items-center gap-2">
+          <RequestMethodBadge method={request.method} />
+          <p className="text-sm font-medium">{request.path}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <p className="ml-4 text-xs italic text-muted-foreground">
+          ({request.created_at})
+        </p>
+        <ArrowUpRight className="size-4" />
+      </div>
     </Link>
   );
 };

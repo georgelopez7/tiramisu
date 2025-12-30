@@ -41,6 +41,7 @@ export const GetRequests = async (): Promise<IRequest[]> => {
       path: requestsTable.path,
       ip: requestsTable.ip,
       payload: requestsTable.payload,
+      created_at: requestsTable.created_at,
       headerID: headersTable.id,
       key: headersTable.key,
       value: headersTable.value,
@@ -59,6 +60,7 @@ export const GetRequests = async (): Promise<IRequest[]> => {
         ip: row.ip,
         payload: row.payload,
         headers: [],
+        created_at: row.created_at,
       });
     }
 
@@ -84,6 +86,7 @@ export const GetRequestByID = async (id: number): Promise<IRequest | null> => {
       path: requestsTable.path,
       ip: requestsTable.ip,
       payload: requestsTable.payload,
+      created_at: requestsTable.created_at,
       headerID: headersTable.id,
       key: headersTable.key,
       value: headersTable.value,
@@ -103,6 +106,7 @@ export const GetRequestByID = async (id: number): Promise<IRequest | null> => {
     ip: data[0].ip,
     payload: data[0].payload,
     headers: [],
+    created_at: data[0].created_at,
   };
 
   data.forEach((row) => {

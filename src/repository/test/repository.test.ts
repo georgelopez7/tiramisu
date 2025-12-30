@@ -162,6 +162,7 @@ describe("TestRepository_GetRequestByID", () => {
     expect(result!.headers!.map((header) => header.value)).toEqual(
       expect.arrayContaining(["application/json", "Bearer token"])
     );
+    expect(result.created_at).toBeDefined();
   });
 
   test("should return request without headers by id", async () => {
@@ -181,6 +182,7 @@ describe("TestRepository_GetRequestByID", () => {
     expect(result.ip).toBe(request.ip);
     expect(result.payload).toBe(request.payload);
     expect(result.headers!.length).toBe(0);
+    expect(result.created_at).toBeDefined();
   });
 
   test("should return null if request not found", async () => {
