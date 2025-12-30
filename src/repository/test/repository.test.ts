@@ -10,7 +10,7 @@ import { beforeAll } from "bun:test";
 import { db } from "@/db/db";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 
-beforeAll(async () => {
+beforeAll(() => {
   migrate(db, { migrationsFolder: "./drizzle" });
 });
 
