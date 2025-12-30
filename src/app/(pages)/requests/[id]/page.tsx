@@ -31,15 +31,17 @@ const Page = async ({ params }: IPageProps) => {
 
   // WEBHOOK SETTINGS
   const secret = process.env.WEBHOOK_SECRET ?? "";
+  const timestampHeader = process.env.TIMESTAMP_HEADER ?? "";
+  const signatureHeader = process.env.SIGNATURE_HEADER ?? "";
 
   const { timestamp } = await GetRequestTimestamp(
     request.headers ?? [],
-    process.env.TIMESTAMP_HEADER ?? ""
+    timestampHeader
   );
 
   const { signature } = await GetRequestSignature(
     request.headers ?? [],
-    process.env.SIGNATURE_HEADER ?? ""
+    signatureHeader
   );
 
   return (
@@ -59,14 +61,14 @@ const Page = async ({ params }: IPageProps) => {
         <Spacer size="small" />
         <RequestPayloadBlock payload={request.payload} />
         <Spacer size="small" />
-        {secret && timestamp && (
-          <WebhookSignatureBlock
-            signature={signature}
-            timestamp={timestamp}
-            payload={request.payload}
-            secret={secret}
-          />
-        )}
+        <WebhookSignatureBlock
+          signature={signature}
+          signatureHeader={signatureHeader}
+          timestamp={timestamp}
+          timestampHeader={timestampHeader}
+          payload={request.payload}
+          secret={secret}
+        />
       </div>
     </PageLayout>
   );

@@ -14,18 +14,40 @@ import { ArrowUpRight } from "lucide-react";
 
 interface ISignatureModalProps {
   timestamp: number;
+  timestampHeader: string;
   signature: string;
+  signatureHeader: string;
   payload: string;
-  // TODO: ADD TIME SKEW
   secret: string;
 }
 
 const WebhookSignatureBlock = ({
   timestamp,
+  timestampHeader,
   signature,
+  signatureHeader,
   payload,
   secret,
 }: ISignatureModalProps) => {
+  if (!secret || !timestamp || !signature) {
+    return (
+      <div className="min-h-[100px] px-4 py-2 border rounded-md flex flex-col items-center justify-center">
+        <div className="text-center">
+          <p>Webhook settings have not been configured yet.</p>
+          <Spacer size="xsmall" />
+          <Link
+            className="flex items-center justify-center gap-1 text-sm text-muted-foreground hover:underline"
+            href="/"
+            target="_blank"
+          >
+            See Docs
+            <ArrowUpRight className="size-4" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const formattedTimestamp = format(
     new Date(timestamp * 1000),
     "yyyy-MM-dd HH:mm"
@@ -85,32 +107,22 @@ const WebhookSignatureBlock = ({
       steps[2] = { ...steps[2], color: "green", disabled: false };
   }
 
-  if (!secret) {
-    return (
-      <div className="min-h-[100px] px-4 py-2 border rounded-md flex flex-col items-center justify-center">
-        <div className="text-center">
-          <p>Webhook settings have not been configured yet.</p>
-          <Spacer size="xsmall" />
-          <Link
-            className="flex items-center justify-center gap-1 text-sm text-muted-foreground hover:underline"
-            href="/"
-            target="_blank"
-          >
-            See Docs
-            <ArrowUpRight className="size-4" />
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-[100px] px-4 py-2 border rounded-md">
       <p className="text-md font-medium">Webhook Signature</p>
+      <Spacer size="medium" />
+      <p className="text-xs italic">{signatureHeader}</p>
       <Spacer size="xsmall" />
       <div className="w-full flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 overflow-x-auto">
         <code className="text-sm font-medium break-all">{signature}</code>
         <CopyToClipboard text={signature} />
+      </div>
+      <Spacer size="medium" />
+      <p className="text-xs italic">{timestampHeader}</p>
+      <Spacer size="xsmall" />
+      <div className="w-full flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 overflow-x-auto">
+        <code className="text-sm font-medium break-all">{timestamp}</code>
+        <CopyToClipboard text={String(timestamp)} />
       </div>
       <Spacer size="medium" />
       <div className="space-y-2">

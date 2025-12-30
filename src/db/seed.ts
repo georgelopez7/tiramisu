@@ -9,7 +9,6 @@ const main = async () => {
 
   const requestsInDB = await GetRequests();
   if (requestsInDB.length > 0) {
-    console.log("🌱 Skipping seeding...");
     return;
   }
 
@@ -56,8 +55,6 @@ const main = async () => {
   const timestamp = Math.floor(Date.now() / 1000);
   const payload = "{key: value}";
   if (secret && timestampHeader && signatureHeader) {
-    console.log("🌱 Seeding webhook request...");
-
     const hasher = crypto.createHmac("sha256", secret);
     hasher.update(timestamp + "." + payload);
     const signature = hasher.digest("hex");
