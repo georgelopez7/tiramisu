@@ -21,6 +21,4 @@ jobs:
         run: bun install
 
       - name: Run tests
-        run: bun test --bail --serial --no-isolate
-        env:
-          NODE_ENV: test
+        run: bun test
