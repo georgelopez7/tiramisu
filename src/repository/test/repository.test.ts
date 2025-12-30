@@ -11,7 +11,6 @@ import { db } from "@/db/db";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 
 beforeAll(async () => {
-  console.log("NODE_ENV", process.env.NODE_ENV);
   migrate(db, { migrationsFolder: "./drizzle" });
 });
 
