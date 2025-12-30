@@ -1,6 +1,5 @@
 import PageLayout from "@/components/page-layout/page-layout";
 import RequestHeadersBlock from "@/components/(blocks)/request-headers-block/request-headers-block";
-import RequestMethodLabel from "@/components/request-method-label/request-method-label";
 import RequestPayloadBlock from "@/components/(blocks)/request-payload-block/request-payload-block";
 import Spacer from "@/components/spacer/spacer";
 import WebhookSignatureBlock from "@/components/(blocks)/webhook-signature-block/webhook-signature-block";
@@ -11,6 +10,7 @@ import {
   GetRequestTimestamp,
 } from "@/service/request.service";
 import IPBadge from "@/components/(badges)/ip-badge/ip-badge";
+import RequestMethodBadge from "@/components/(badges)/request-method-badge/request-method-badge";
 
 interface IPageProps {
   params: {
@@ -50,7 +50,7 @@ const Page = async ({ params }: IPageProps) => {
         </div>
         <Spacer size="small" />
         <div className="flex items-center rounded-md px-4 py-2 border gap-2">
-          <RequestMethodLabel method={request.method} />
+          <RequestMethodBadge method={request.method} />
           <p>{request.path}</p>
         </div>
         <Spacer size="small" />

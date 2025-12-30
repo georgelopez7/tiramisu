@@ -1,4 +1,4 @@
-import ToggleThemeButton from "@/components/toggle-theme-button/toggle-theme-button";
+import ToggleThemeButton from "@/components/(buttons)/toggle-theme-button/toggle-theme-button";
 import Image from "next/image";
 import Link from "next/link";
 
