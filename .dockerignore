@@ -9,3 +9,7 @@ README.md
 .env.local
 .storybook
 *.stories.tsx
+.test
+matcher.d.ts
+sqlite.db
+postman_collection.json
