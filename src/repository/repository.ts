@@ -51,7 +51,6 @@ export const GetRequests = async (): Promise<IRequest[]> => {
   const requestMap = new Map<number, IRequest>();
   data.forEach((row) => {
     const requestID = row.requestID;
-
     if (!requestMap.has(requestID)) {
       requestMap.set(requestID, {
         id: requestID,

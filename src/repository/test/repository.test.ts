@@ -10,8 +10,8 @@ import { beforeAll } from "bun:test";
 import { db } from "@/db/db";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 
-beforeAll(() => {
-  migrate(db, { migrationsFolder: "./drizzle" });
+beforeAll(async () => {
+  await migrate(db, { migrationsFolder: "./drizzle" });
 });
 
 describe("TestRepository_AddRequest", () => {
@@ -19,7 +19,7 @@ describe("TestRepository_AddRequest", () => {
     await ResetRequestsTable();
   });
 
-  test("should insert a request without headers and return it", async () => {
+  test("should insert a request without headers and return the RequestID", async () => {
     const request = {
       method: "GET",
       path: "/api/test",
@@ -38,7 +38,7 @@ describe("TestRepository_AddRequest", () => {
     expect(result.headers!.length).toBe(0);
   });
 
-  test("should insert a request with headers and return it", async () => {
+  test("should insert a request with headers and return the RequestID", async () => {
     const request = {
       method: "POST",
       path: "/api/test2",
