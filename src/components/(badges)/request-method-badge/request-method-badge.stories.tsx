@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import RequestMethodBadge from "./request-method-badge";
 
 const meta: Meta<typeof RequestMethodBadge> = {
-  title: "Components/RequestMethodBadge",
+  title: "Components/Badges/Request Method Badge",
   component: RequestMethodBadge,
   parameters: {
     layout: "centered",

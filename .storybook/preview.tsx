@@ -1,6 +1,7 @@
 import "@/app/fonts/poppins.storybook.css";
 import "../src/app/globals.css";
 import type { Preview } from "@storybook/nextjs";
+import { ThemeProvider } from "../src/lib/theme.utils";
 
 const preview: Preview = {
   parameters: {
@@ -13,9 +14,16 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div style={{ fontFamily: "Poppins !important" }}>
-        <Story />
-      </div>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <div style={{ fontFamily: "Poppins !important" }}>
+          <Story />
+        </div>
+      </ThemeProvider>
     ),
   ],
 };

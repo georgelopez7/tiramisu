@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import IPBadge from "./ip-badge";
 
 const meta: Meta<typeof IPBadge> = {
-  title: "Components/IPBadge",
+  title: "Components/Badges/IP Badge",
   component: IPBadge,
   parameters: {
     layout: "centered",

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import CopyToClipboard from "./copy-to-clipboard";
 
 const meta: Meta<typeof CopyToClipboard> = {
-  title: "Components/CopyToClipboard",
+  title: "Components/Buttons/Copy To Clipboard",
   component: CopyToClipboard,
   parameters: {
     layout: "centered",
