@@ -21,7 +21,11 @@ jobs:
         run: bun install
 
       - name: Setup SQLite
-        run: bun run drizzle:migrate
+        run: |
+          rm -f sqlite.db
+          bun run drizzle:migrate
 
       - name: Run tests
-        run: bun test
+        run: bun test --bail
+        env:
+          BUN_ENV: test

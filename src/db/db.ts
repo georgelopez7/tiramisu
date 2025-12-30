@@ -1,5 +1,8 @@
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { Database } from "bun:sqlite";
 
-const sqlite = new Database("sqlite.db");
+const isTest = process.env.BUN_ENV === "test";
+const path = isTest ? ":memory:" : "sqlite.db";
+
+const sqlite = new Database(path);
 export const db = drizzle({ client: sqlite });
