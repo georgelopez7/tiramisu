@@ -7,8 +7,14 @@ import {
   beforeEach,
   afterEach,
 } from "bun:test";
-import { IRequest } from "@/domain/request";
-import { AddRequest, GetRequests } from "../request.service";
+import { IRequest, IRequestHeader } from "@/domain/request";
+import {
+  AddRequest,
+  GetRequestByID,
+  GetRequests,
+  GetRequestSignature,
+  GetRequestTimestamp,
+} from "../request.service";
 import * as repository from "../../repository/repository";
 
 describe("TestService_AddRequest", () => {
@@ -82,5 +88,157 @@ describe("TestService_GetRequests", () => {
 
     expect(requests).toBe(mockRequests);
     expect(getRequestsSpy).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("TestService_GetRequestByID", () => {
+  let getRequestByIDSpy: ReturnType<typeof spyOn>;
+
+  beforeEach(() => {
+    getRequestByIDSpy = spyOn(repository, "GetRequestByID");
+  });
+
+  afterEach(() => {
+    mock.restore();
+  });
+
+  test("should get requests", async () => {
+    const mockID = 123;
+    const mockRequest = {
+      id: mockID,
+      method: "GET",
+      path: "/test",
+      ip: "127.0.0.1",
+      payload: "test",
+      headers: [
+        {
+          id: 123,
+          key: "Content-Type",
+          value: "application/json",
+          request_id: 123,
+        },
+      ],
+    } as IRequest;
+
+    getRequestByIDSpy.mockResolvedValue(mockRequest);
+
+    const request = await GetRequestByID(mockID);
+
+    expect(request).toBe(mockRequest);
+    expect(getRequestByIDSpy).toHaveBeenCalledTimes(1);
+    expect(getRequestByIDSpy).toHaveBeenCalledWith(mockID);
+  });
+});
+
+describe("TestService_GetRequestTimestamp", () => {
+  test("should get request timestamp", () => {
+    const mockHeaders = [
+      {
+        key: "X-Timestamp",
+        value: "1689968000",
+      },
+    ] as IRequestHeader[];
+
+    const { timestamp, error } = GetRequestTimestamp(
+      mockHeaders,
+      "X-Timestamp"
+    );
+
+    expect(timestamp).toBe(1689968000);
+    expect(error).toBeNull();
+  });
+
+  test("should handle case when no headers are provided", () => {
+    const mockHeaders = [] as IRequestHeader[];
+
+    const { timestamp, error } = GetRequestTimestamp(
+      mockHeaders,
+      "X-Timestamp"
+    );
+
+    expect(timestamp).toBe(0);
+    expect(error).toBeNull();
+  });
+
+  test("should handle case when header is not found", () => {
+    const mockHeaders = [
+      {
+        key: "X-Not-Found",
+        value: "1689968000",
+      },
+    ] as IRequestHeader[];
+
+    const { timestamp, error } = GetRequestTimestamp(
+      mockHeaders,
+      "X-Timestamp"
+    );
+
+    expect(timestamp).toBe(0);
+    expect(error).toBeDefined();
+  });
+
+  test("should handle case when timestamp is NOT a valid integer", () => {
+    const mockHeaders = [
+      {
+        key: "X-Not-Found",
+        value: "invalid-integer",
+      },
+    ] as IRequestHeader[];
+
+    const { timestamp, error } = GetRequestTimestamp(
+      mockHeaders,
+      "X-Timestamp"
+    );
+
+    expect(timestamp).toBe(0);
+    expect(error).toBeDefined();
+  });
+});
+
+describe("TestService_GetRequestSignature", () => {
+  test("should get request signature", () => {
+    const mockHeaders = [
+      {
+        key: "X-Signature",
+        value: "1234567890",
+      },
+    ] as IRequestHeader[];
+
+    const { signature, error } = GetRequestSignature(
+      mockHeaders,
+      "X-Signature"
+    );
+
+    expect(signature).toBe("1234567890");
+    expect(error).toBeNull();
+  });
+
+  test("should handle case when no headers are provided", () => {
+    const mockHeaders = [] as IRequestHeader[];
+
+    const { signature, error } = GetRequestSignature(
+      mockHeaders,
+      "X-Signature"
+    );
+
+    expect(signature).toBe("");
+    expect(error).toBeNull();
+  });
+
+  test("should handle case when header is not found", () => {
+    const mockHeaders = [
+      {
+        key: "X-Not-Found",
+        value: "1234567890",
+      },
+    ] as IRequestHeader[];
+
+    const { signature, error } = GetRequestSignature(
+      mockHeaders,
+      "X-Signature"
+    );
+
+    expect(signature).toBe("");
+    expect(error).toBeDefined();
   });
 });

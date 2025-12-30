@@ -4,9 +4,9 @@ import RequestMethodLabel from "@/components/request-method-label/request-method
 import RequestPayloadBlock from "@/components/(blocks)/request-payload-block/request-payload-block";
 import Spacer from "@/components/spacer/spacer";
 import WebhookSignatureBlock from "@/components/(blocks)/webhook-signature-block/webhook-signature-block";
-import { GetRequestByID } from "@/repository/repository";
 import { GetGeoLocation } from "@/service/ip.service";
 import {
+  GetRequestByID,
   GetRequestSignature,
   GetRequestTimestamp,
 } from "@/service/request.service";

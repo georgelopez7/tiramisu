@@ -4,6 +4,7 @@ import { IRequest, IRequestHeader } from "@/domain/request";
 import {
   AddRequest as AddRequestRepo,
   GetRequests as GetRequestsRepo,
+  GetRequestByID as GetRequestByIDRepo,
 } from "../repository/repository";
 
 // AddRequest - add a new request
@@ -18,9 +19,15 @@ export const GetRequests = async (): Promise<IRequest[]> => {
   return requests;
 };
 
+// GetRequestByID - get a request by ID
+export const GetRequestByID = async (id: number): Promise<IRequest | null> => {
+  const request = await GetRequestByIDRepo(id);
+  return request;
+};
+
 // GetRequestTimestamp - get the timestamp of a request
 export const GetRequestTimestamp = (
-  headers: IRequestHeader[], // TODO: WRITE TESTS
+  headers: IRequestHeader[],
   headerName: string
 ): {
   timestamp: number;
@@ -55,7 +62,6 @@ export const GetRequestTimestamp = (
 };
 
 export const GetRequestSignature = (
-  // TODO: WRITE TESTS
   headers: IRequestHeader[],
   headerName: string
 ): {
