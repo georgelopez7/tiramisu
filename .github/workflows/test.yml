@@ -28,4 +28,4 @@ jobs:
       - name: Run tests
         run: bun test --bail
         env:
-          BUN_ENV: test
+          NODE_ENV: test
