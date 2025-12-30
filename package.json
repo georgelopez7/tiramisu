@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bun run --bun next dev",
+    "dev": "bun seed && bun run --bun next dev",
     "build": "bun run --bun next build",
     "start": "bun run --bun next start",
     "lint": "bun run --bun next lint",
     "test": "BUN_ENV=test bun test",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
+    "seed": "bun ./src/db/seed.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

@@ -113,14 +113,16 @@ const WebhookSignatureBlock = ({
         <CopyToClipboard text={signature} />
       </div>
       <Spacer size="medium" />
-      {steps.map((step, index) => (
-        <DotBanner
-          key={index}
-          color={step.color}
-          text={step.text}
-          disabled={step.disabled}
-        />
-      ))}
+      <div className="space-y-2">
+        {steps.map((step, index) => (
+          <DotBanner
+            key={index}
+            color={step.color}
+            text={step.text}
+            disabled={step.disabled}
+          />
+        ))}
+      </div>
     </div>
   );
 };

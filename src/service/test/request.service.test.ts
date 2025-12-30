@@ -131,7 +131,7 @@ describe("TestService_GetRequestByID", () => {
 });
 
 describe("TestService_GetRequestTimestamp", () => {
-  test("should get request timestamp", () => {
+  test("should get request timestamp", async () => {
     const mockHeaders = [
       {
         key: "X-Timestamp",
@@ -139,7 +139,7 @@ describe("TestService_GetRequestTimestamp", () => {
       },
     ] as IRequestHeader[];
 
-    const { timestamp, error } = GetRequestTimestamp(
+    const { timestamp, error } = await GetRequestTimestamp(
       mockHeaders,
       "X-Timestamp"
     );
@@ -148,10 +148,10 @@ describe("TestService_GetRequestTimestamp", () => {
     expect(error).toBeNull();
   });
 
-  test("should handle case when no headers are provided", () => {
+  test("should handle case when no headers are provided", async () => {
     const mockHeaders = [] as IRequestHeader[];
 
-    const { timestamp, error } = GetRequestTimestamp(
+    const { timestamp, error } = await GetRequestTimestamp(
       mockHeaders,
       "X-Timestamp"
     );
@@ -160,7 +160,7 @@ describe("TestService_GetRequestTimestamp", () => {
     expect(error).toBeNull();
   });
 
-  test("should handle case when header is not found", () => {
+  test("should handle case when header is not found", async () => {
     const mockHeaders = [
       {
         key: "X-Not-Found",
@@ -168,7 +168,7 @@ describe("TestService_GetRequestTimestamp", () => {
       },
     ] as IRequestHeader[];
 
-    const { timestamp, error } = GetRequestTimestamp(
+    const { timestamp, error } = await GetRequestTimestamp(
       mockHeaders,
       "X-Timestamp"
     );
@@ -177,7 +177,7 @@ describe("TestService_GetRequestTimestamp", () => {
     expect(error).toBeDefined();
   });
 
-  test("should handle case when timestamp is NOT a valid integer", () => {
+  test("should handle case when timestamp is NOT a valid integer", async () => {
     const mockHeaders = [
       {
         key: "X-Not-Found",
@@ -185,7 +185,7 @@ describe("TestService_GetRequestTimestamp", () => {
       },
     ] as IRequestHeader[];
 
-    const { timestamp, error } = GetRequestTimestamp(
+    const { timestamp, error } = await GetRequestTimestamp(
       mockHeaders,
       "X-Timestamp"
     );
@@ -196,7 +196,7 @@ describe("TestService_GetRequestTimestamp", () => {
 });
 
 describe("TestService_GetRequestSignature", () => {
-  test("should get request signature", () => {
+  test("should get request signature", async () => {
     const mockHeaders = [
       {
         key: "X-Signature",
@@ -204,7 +204,7 @@ describe("TestService_GetRequestSignature", () => {
       },
     ] as IRequestHeader[];
 
-    const { signature, error } = GetRequestSignature(
+    const { signature, error } = await GetRequestSignature(
       mockHeaders,
       "X-Signature"
     );
@@ -213,10 +213,10 @@ describe("TestService_GetRequestSignature", () => {
     expect(error).toBeNull();
   });
 
-  test("should handle case when no headers are provided", () => {
+  test("should handle case when no headers are provided", async () => {
     const mockHeaders = [] as IRequestHeader[];
 
-    const { signature, error } = GetRequestSignature(
+    const { signature, error } = await GetRequestSignature(
       mockHeaders,
       "X-Signature"
     );
@@ -225,7 +225,7 @@ describe("TestService_GetRequestSignature", () => {
     expect(error).toBeNull();
   });
 
-  test("should handle case when header is not found", () => {
+  test("should handle case when header is not found", async () => {
     const mockHeaders = [
       {
         key: "X-Not-Found",
@@ -233,7 +233,7 @@ describe("TestService_GetRequestSignature", () => {
       },
     ] as IRequestHeader[];
 
-    const { signature, error } = GetRequestSignature(
+    const { signature, error } = await GetRequestSignature(
       mockHeaders,
       "X-Signature"
     );

@@ -31,12 +31,13 @@ const Page = async ({ params }: IPageProps) => {
 
   // WEBHOOK SETTINGS
   const secret = process.env.WEBHOOK_SECRET ?? "";
-  const { timestamp } = GetRequestTimestamp(
+
+  const { timestamp } = await GetRequestTimestamp(
     request.headers ?? [],
     process.env.TIMESTAMP_HEADER ?? ""
   );
 
-  const { signature } = GetRequestSignature(
+  const { signature } = await GetRequestSignature(
     request.headers ?? [],
     process.env.SIGNATURE_HEADER ?? ""
   );

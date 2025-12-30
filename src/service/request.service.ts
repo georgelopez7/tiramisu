@@ -26,13 +26,13 @@ export const GetRequestByID = async (id: number): Promise<IRequest | null> => {
 };
 
 // GetRequestTimestamp - get the timestamp of a request
-export const GetRequestTimestamp = (
+export const GetRequestTimestamp = async (
   headers: IRequestHeader[],
   headerName: string
-): {
+): Promise<{
   timestamp: number;
   error: string | null;
-} => {
+}> => {
   if (headers.length === 0) {
     return {
       timestamp: 0,
@@ -61,13 +61,13 @@ export const GetRequestTimestamp = (
   }
 };
 
-export const GetRequestSignature = (
+export const GetRequestSignature = async (
   headers: IRequestHeader[],
   headerName: string
-): {
+): Promise<{
   signature: string;
   error: string | null;
-} => {
+}> => {
   if (headers.length === 0) {
     return {
       signature: "",
