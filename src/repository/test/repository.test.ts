@@ -6,13 +6,6 @@ import {
   ResetRequestsTable,
 } from "../repository";
 import { IRequest } from "@/domain/request";
-import { beforeAll } from "bun:test";
-import { db } from "@/db/db";
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
-
-beforeAll(async () => {
-  await migrate(db, { migrationsFolder: "./drizzle" });
-});
 
 describe("TestRepository_AddRequest", () => {
   beforeEach(async () => {
