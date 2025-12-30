@@ -4,9 +4,9 @@ import { eq } from "drizzle-orm";
 import { IRequest } from "@/domain/request";
 
 // AddRequest - add a new request and its headers in a single transaction
-export const AddRequest = async (request: IRequest): Promise<IRequest> => {
+export const AddRequest = async (request: IRequest): Promise<number> => {
   return db.transaction(async (tx) => {
-    const [insertedRequest] = await tx
+    const inserted = await tx
       .insert(requestsTable)
       .values({
         method: request.method,
@@ -14,22 +14,21 @@ export const AddRequest = async (request: IRequest): Promise<IRequest> => {
         ip: request.ip,
         payload: request.payload,
       })
-      .returning();
+      .returning({ id: requestsTable.id });
+
+    const requestID = inserted[0].id;
 
     if (request.headers && request.headers.length > 0) {
       await tx.insert(headersTable).values(
         request.headers.map((header) => ({
           key: header.key,
           value: header.value,
-          request_id: insertedRequest.id,
+          request_id: requestID,
         }))
       );
     }
 
-    return {
-      id: insertedRequest.id,
-      ...request,
-    };
+    return requestID;
   });
 };
 
@@ -52,7 +51,6 @@ export const GetRequests = async (): Promise<IRequest[]> => {
   const requestMap = new Map<number, IRequest>();
   data.forEach((row) => {
     const requestID = row.requestID;
-
     if (!requestMap.has(requestID)) {
       requestMap.set(requestID, {
         id: requestID,
@@ -110,6 +108,7 @@ export const GetRequestByID = async (id: number): Promise<IRequest | null> => {
   data.forEach((row) => {
     if (row.headerID) {
       request.headers!.push({
+        id: row.headerID,
         key: row.key!,
         value: row.value!,
         request_id: id,
