@@ -21,6 +21,7 @@ describe("TestRepository_AddRequest", () => {
     } as IRequest;
 
     const requestID = await AddRequest(request);
+    console.log("💨 Request ID: ", requestID);
     const result = (await GetRequestByID(requestID)) as IRequest;
 
     expect(result.id).toBeDefined();
