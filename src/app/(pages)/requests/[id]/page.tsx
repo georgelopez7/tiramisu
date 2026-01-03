@@ -60,9 +60,11 @@ const Page = async ({ params }: IPageProps) => {
         <Spacer size="small" />
         <RequestHeadersBlock headers={request.headers ?? []} />
         <Spacer size="small" />
-        <RequestParamsBlock params={request.params ?? []} />
+        {request.params!.length > 0 && (
+          <RequestParamsBlock params={request.params ?? []} />
+        )}
         <Spacer size="small" />
-        <RequestPayloadBlock payload={request.payload} />
+        {request.payload && <RequestPayloadBlock payload={request.payload} />}
         <Spacer size="small" />
         <WebhookSignatureBlock
           signature={signature}

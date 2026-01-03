@@ -41,10 +41,7 @@ const RequestHeadersBlock = ({ headers }: IRequestHeadersBlockProps) => {
                   >
                     {header.key}
                   </Badge>
-                  <CopyToClipboard
-                    className="mr-8"
-                    text={`${header.key}: ${header.value}`}
-                  />
+                  <CopyToClipboard text={`${header.key}: ${header.value}`} />
                 </div>
                 <Spacer size="small" />
                 <div className="font-mono text-sm leading-relaxed text-foreground/90">

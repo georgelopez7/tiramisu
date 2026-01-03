@@ -8,7 +8,7 @@ interface IPageLayoutProps {
 
 const PageLayout = ({ children }: IPageLayoutProps) => {
   return (
-    <div className="flex flex-col justify-center items-center p-8 lg:w-[40vw] mx-auto">
+    <div className="flex flex-col justify-center items-center p-8 lg:w-[78vw] xl:w-[40vw] mx-auto">
       <Navbar />
       <Spacer size="medium" />
       {children}

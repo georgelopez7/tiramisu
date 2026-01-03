@@ -25,7 +25,6 @@ async function handler(request: NextRequest) {
       })
     );
 
-    console.log("URL: ", url.search);
     const record = {
       method: request.method,
       path: url.pathname + url.search,

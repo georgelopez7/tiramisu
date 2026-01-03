@@ -9,6 +9,8 @@ interface IRequestBannerProps {
 }
 
 const RequestBanner = ({ request }: IRequestBannerProps) => {
+  const basePath = request.path.split("?")[0];
+  const params = request.path.split("?")[1];
   return (
     <Link
       href={`/requests/${request.id}`}
@@ -16,7 +18,13 @@ const RequestBanner = ({ request }: IRequestBannerProps) => {
     >
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <RequestMethodBadge method={request.method} />
-        <p className="text-sm font-medium italic truncate">{request.path}</p>
+        <p className="text-sm font-medium italic truncate">
+          {basePath}
+          <span className="text-muted-foreground">
+            {params && "?"}
+            {params}
+          </span>
+        </p>
       </div>
       <div className="flex items-center gap-2">
         <p className="ml-4 text-xs italic text-muted-foreground">
