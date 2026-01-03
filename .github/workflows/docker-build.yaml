@@ -1,0 +1,26 @@
+name: Docker Build (PR)
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (no push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: georgelopez7/tiramisu:pr-${{ github.event.pull_request.number }}
