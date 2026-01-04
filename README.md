@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="./public/tiramisu-banner-light.png#gh-light-mode-only" width="300">
+  <img src="./public/tiramisu-banner-dark.png#gh-dark-mode-only" width="300">
+</p>
 
-## Getting Started
+Tiramisu is a simple, open-source, and lightweight HTTP request inspector. Perfect for testing webhooks, APIs, and integrations with ease.
 
-First, run the development server:
+## Docker
+
+Checkout the Docker image [here](https://hub.docker.com/r/geloop/tiramisu)
+
+Run with `docker-compose.yaml`
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+services:
+  tiramisu:
+    image: geloop/tiramisu:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - WEBHOOK_SECRET=<webhook-secret> [OPTIONAL]
+      - SIGNATURE_HEADER=<signature-header> (e.g X-Signature) [OPTIONAL]
+      - TIMESTAMP_HEADER=<timestamp-header> (e.g X-Timestamp) [OPTIONAL]
+    volumes:
+      - tiramisu-data:/app/data
+
+volumes:
+  tiramisu-data:
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Webhook Testing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Tiramisu offers webhook signature validation, allowing you to verify the authenticity of incoming requests.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set up the following environment variables:
 
-## Learn More
+- `WEBHOOK_SECRET`: The secret key used to sign your webhook requests.
+- `SIGNATURE_HEADER`: The header key used to store the signature in the request.
+- `TIMESTAMP_HEADER`: The header key used to store the timestamp in the request.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The expected signature format is: `{timestamp}.{payload}`.
