@@ -1,0 +1,10 @@
+services:
+  tiramisu:
+    image: geloop/tiramisu:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - tiramisu-data:/app/data
+
+volumes:
+  tiramisu-data:
