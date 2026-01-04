@@ -3,7 +3,11 @@
   <img src="./public/tiramisu-banner-dark.png#gh-dark-mode-only" width="300">
 </div>
 
-Tiramisu is a simple, open-source, and lightweight HTTP request inspector. Perfect for testing webhooks, APIs, and integrations with ease.
+<hr />
+
+<p align="center">
+  Tiramisu is a simple, open-source, and lightweight HTTP request inspector. Perfect for testing webhooks, APIs, and integrations with ease.
+</p>
 
 <div align="center">
     <img src="./public/screenshots/tiramisu.png" width="600">
@@ -50,7 +54,7 @@ Set up the following environment variables:
 
 #### Validation Process
 
-The expected signature format is: `{timestamp}.{payload}`.
+The expected signature format is: `{timestamp}.{payload}`
 
 Tiramisu uses the SHA256 algorithm to generate generate the signature and validate the received signature from the `SIGNATURE_HEADER` in.
 
