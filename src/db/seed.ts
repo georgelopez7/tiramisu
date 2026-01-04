@@ -1,6 +1,5 @@
 import { IRequest } from "@/domain/request";
 import { AddRequest, GetRequests } from "@/service/request.service";
-import crypto from "crypto";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { db } from "./db";
 
@@ -55,7 +54,7 @@ const main = async () => {
   const timestamp = Math.floor(Date.now() / 1000);
   const payload = "{key: value}";
   if (secret && timestampHeader && signatureHeader) {
-    const hasher = crypto.createHmac("sha256", secret);
+    const hasher = new Bun.CryptoHasher("sha256", secret);
     hasher.update(timestamp + "." + payload);
     const signature = hasher.digest("hex");
 

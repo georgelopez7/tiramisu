@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { describe, expect, test } from "bun:test";
 
 import {
   ERR_INVALID_WEBHOOK_SIGNATURE,

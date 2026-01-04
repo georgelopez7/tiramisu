@@ -1,5 +1,3 @@
-import crypto from "crypto";
-
 export const ERR_WEBHOOK_SECRET_NOT_DEFINED = "Webhook secret is not defined";
 export const ERR_WEBHOOK_OUTDATED =
   "Webhook is outdated. Please send webhook again.";
@@ -25,7 +23,7 @@ export const ValidateWebhookSignature = (
     return ERR_WEBHOOK_OUTDATED;
   }
 
-  const hasher = crypto.createHmac("sha256", secret);
+  const hasher = new Bun.CryptoHasher("sha256", secret);
   hasher.update(timestamp + "." + payload);
   const expectedSignature = hasher.digest("hex");
 
