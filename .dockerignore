@@ -12,6 +12,6 @@ README.md
 .test
 matcher.d.ts
 sqlite.db
-postman_collection.json
+docs/postman_collection.json
 public/tiramisu-logo.png
 public/screenshots

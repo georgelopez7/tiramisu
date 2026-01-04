@@ -1,0 +1,202 @@
+{
+  "info": {
+    "name": "Tiramisu API",
+    "description": "API collection for Tiramisu application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "GET Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "POST Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"key\": \"value\"}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "PUT Request",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"key\": \"updated_value\"}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "DELETE Request",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "PATCH Request",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"key\": \"patched_value\"}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "HEAD Request",
+      "request": {
+        "method": "HEAD",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "OPTIONS Request",
+      "request": {
+        "method": "OPTIONS",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/test",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"]
+        }
+      }
+    },
+    {
+      "name": "POST Request with Long Payload",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"user\":{\"name\":\"Alice Johnson\",\"email\":\"alice@example.com\",\"age\":28,\"isVerified\":true,\"preferences\":{\"theme\":\"light\",\"language\":\"en\",\"notifications\":{\"email\":true,\"sms\":false,\"push\":true}},\"tags\":[\"premium\",\"active\",\"beta-tester\"],\"scores\":[85,92,78,96,89],\"metadata\":{\"createdAt\":\"2023-10-01T00:00:00Z\",\"updatedAt\":\"2023-12-01T00:00:00Z\",\"version\":1.2}},\"request\":{\"type\":\"data_sync\",\"priority\":5,\"flags\":{\"urgent\":false,\"retryable\":true,\"compress\":true},\"payloadSize\":1024,\"description\":\"This is a sample payload with various data types including strings, numbers, booleans, arrays, and nested objects. It demonstrates the pretty printing functionality of the RequestPayloadBlock component.\"},\"items\":[{\"id\":1,\"name\":\"Item One\",\"quantity\":10,\"price\":29.99,\"available\":true},{\"id\":2,\"name\":\"Item Two\",\"quantity\":5,\"price\":49.5,\"available\":false}],\"status\":\"pending\",\"timestamp\":\"2023-12-15T12:30:45Z\"}"
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/api/test/long-payload",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test", "long-payload"]
+        }
+      }
+    },
+    {
+      "name": "GET Request with Many Query Params",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/test?param1=value1&param2=value2&param3=value3&param4=value4&param5=value5&param6=value6&param7=value7&param8=value8&param9=value9&param10=value10",
+          "host": ["{{BASE_URL}}"],
+          "path": ["api", "test"],
+          "query": [
+            {
+              "key": "param1",
+              "value": "value1"
+            },
+            {
+              "key": "param2",
+              "value": "value2"
+            },
+            {
+              "key": "param3",
+              "value": "value3"
+            },
+            {
+              "key": "param4",
+              "value": "value4"
+            },
+            {
+              "key": "param5",
+              "value": "value5"
+            },
+            {
+              "key": "param6",
+              "value": "value6"
+            },
+            {
+              "key": "param7",
+              "value": "value7"
+            },
+            {
+              "key": "param8",
+              "value": "value8"
+            },
+            {
+              "key": "param9",
+              "value": "value9"
+            },
+            {
+              "key": "param10",
+              "value": "value10"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

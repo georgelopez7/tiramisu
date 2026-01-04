@@ -6,7 +6,13 @@ interface RequestPayloadBlockProps {
 }
 
 const RequestPayloadBlock = ({ payload }: RequestPayloadBlockProps) => {
-  const formattedPayload = JSON.stringify(payload, null, 2);
+  let formattedPayload;
+  try {
+    const parsed = JSON.parse(payload);
+    formattedPayload = JSON.stringify(parsed, null, 2);
+  } catch {
+    formattedPayload = payload;
+  }
 
   return (
     <div className="px-4 py-2 border rounded-md">
