@@ -7,14 +7,16 @@ import {
   beforeEach,
   afterEach,
 } from "bun:test";
-import { IRequest, IRequestHeader } from "@/domain/request";
+import { IRequest, IRequestHeader, IRequestParam } from "@/domain/request";
 import {
   AddRequest,
   GetRequestByID,
   GetRequests,
   GetRequestSignature,
   GetRequestTimestamp,
+  HandleRequest,
 } from "../request.service";
+import { NextRequest } from "next/server";
 import * as repository from "../../repository/repository";
 
 describe("TestService_AddRequest", () => {
@@ -240,5 +242,84 @@ describe("TestService_GetRequestSignature", () => {
 
     expect(signature).toBe("");
     expect(error).toBeDefined();
+  });
+});
+
+describe("TestService_HandleRequest", () => {
+  test("should handle request with all fields", async () => {
+    const request = new NextRequest(
+      "http://example.com/path?key1=value1&key2=value2",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "test-agent",
+          "X-Forwarded-For": "192.168.1.1",
+        },
+        body: "payload data",
+      }
+    );
+
+    const req = await HandleRequest(request);
+
+    expect(req.method).toBe("POST");
+    expect(req.path).toBe("/path?key1=value1&key2=value2");
+    expect(req.ip).toBe("192.168.1.1");
+    expect(req.payload).toBe("payload data");
+    expect(req.headers).toEqual([
+      { key: "Content-Type", value: "application/json" },
+      { key: "User-Agent", value: "test-agent" },
+      { key: "X-Forwarded-For", value: "192.168.1.1" },
+    ] as IRequestHeader[]);
+    expect(req.params).toEqual([
+      { key: "key1", value: "value1" },
+      { key: "key2", value: "value2" },
+    ] as IRequestParam[]);
+  });
+
+  test("should handle request without X-Forwarded-For header", async () => {
+    const request = new NextRequest("http://example.com/path", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: "payload data",
+    });
+
+    const req = await HandleRequest(request);
+
+    expect(req.method).toBe("POST");
+    expect(req.path).toBe("/path");
+    expect(req.ip).toBe("unknown");
+    expect(req.payload).toBe("payload data");
+    expect(req.headers).toEqual([
+      { key: "Content-Type", value: "application/json" },
+    ] as IRequestHeader[]);
+    expect(req.params).toEqual([]);
+  });
+
+  test("should handle request with no search params", async () => {
+    const request = new NextRequest("http://example.com/path", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "test-agent",
+        "X-Forwarded-For": "192.168.1.1",
+      },
+      body: "payload data",
+    });
+
+    const result = await HandleRequest(request);
+
+    expect(result.method).toBe("POST");
+    expect(result.path).toBe("/path");
+    expect(result.ip).toBe("192.168.1.1");
+    expect(result.payload).toBe("payload data");
+    expect(result.headers).toEqual([
+      { key: "Content-Type", value: "application/json" },
+      { key: "User-Agent", value: "test-agent" },
+      { key: "X-Forwarded-For", value: "192.168.1.1" },
+    ] as IRequestHeader[]);
+    expect(result.params).toEqual([]);
   });
 });

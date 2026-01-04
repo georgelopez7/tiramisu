@@ -1,11 +1,12 @@
 "use server";
 
-import { IRequest, IRequestHeader } from "@/domain/request";
+import { IRequest, IRequestHeader, IRequestParam } from "@/domain/request";
 import {
   AddRequest as AddRequestRepo,
   GetRequests as GetRequestsRepo,
   GetRequestByID as GetRequestByIDRepo,
 } from "../repository/repository";
+import { NextRequest } from "next/server";
 
 // AddRequest - add a new request
 export const AddRequest = async (request: IRequest): Promise<number> => {
@@ -61,6 +62,7 @@ export const GetRequestTimestamp = async (
   }
 };
 
+// GetRequestSignature - get the signature of a request
 export const GetRequestSignature = async (
   headers: IRequestHeader[],
   headerName: string
@@ -87,4 +89,37 @@ export const GetRequestSignature = async (
     signature: header.value,
     error: null,
   };
+};
+
+// HandleRequest - handle a request
+export const HandleRequest = async (
+  request: NextRequest
+): Promise<IRequest> => {
+  const url = new URL(request.url);
+
+  const ip = request.headers.get("X-Forwarded-For") || "unknown";
+
+  let payload = "";
+  payload = await request.text();
+
+  const headers = Array.from(request.headers.entries()).map(([key, value]) => ({
+    key,
+    value,
+  }));
+
+  const params = Array.from(url.searchParams.entries()).map(([key, value]) => ({
+    key,
+    value,
+  }));
+
+  const record = {
+    method: request.method,
+    path: url.pathname + url.search,
+    ip: ip,
+    payload: payload,
+    headers: headers as IRequestHeader[],
+    params: params as IRequestParam[],
+  };
+
+  return record;
 };
