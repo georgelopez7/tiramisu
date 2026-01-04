@@ -27,6 +27,8 @@ const Page = async ({ params }: IPageProps) => {
     return <p>Request not found</p>;
   }
 
+  const basePath = request.path.split("?")[0];
+
   // GEOLOCATION
   const geoLocation = await GetGeoLocation(request.ip);
 
@@ -55,7 +57,7 @@ const Page = async ({ params }: IPageProps) => {
         <Spacer size="small" />
         <div className="flex items-center rounded-md px-4 py-2 border gap-2">
           <RequestMethodBadge method={request.method} />
-          <p>{request.path}</p>
+          <p>{basePath}</p>
         </div>
         <Spacer size="small" />
         <RequestHeadersBlock headers={request.headers ?? []} />

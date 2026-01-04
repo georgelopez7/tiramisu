@@ -42,7 +42,7 @@ const RequestParamsBlock = ({ params }: IRequestParamsBlockProps) => {
                     {param.key}
                   </Badge>
                   <CopyToClipboard
-                    className="mr-8"
+                    className="mr-4"
                     text={`${param.key}: ${param.value}`}
                   />
                 </div>

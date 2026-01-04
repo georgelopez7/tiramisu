@@ -7,12 +7,19 @@ const Navbar = () => {
     <div className="w-full flex justify-between items-center">
       <Link href="/" className="flex items-center gap-2">
         <Image
-          src="/tiramisu-logo.png"
-          alt="Tiramisu Logo"
-          width={40}
-          height={40}
+          className="hidden dark:block"
+          src="/tiramisu-banner-dark.png"
+          alt="dark-mode-image"
+          width={200}
+          height={60}
         />
-        <h1 className="text-2xl font-bold">Tiramisu</h1>
+        <Image
+          className="block dark:hidden"
+          src="/tiramisu-banner-light.png"
+          alt="light-mode-image"
+          width={200}
+          height={60}
+        />
       </Link>
       <ToggleThemeButton />
     </div>
