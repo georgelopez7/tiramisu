@@ -15,7 +15,7 @@ const RequestPayloadBlock = ({ payload }: RequestPayloadBlockProps) => {
   }
 
   return (
-    <div className="px-4 py-2 border rounded-md">
+    <div className="p-4 border rounded-md">
       <p className="text-md font-medium">Payload</p>
       <Spacer size="xsmall" />
       <div className="relative">

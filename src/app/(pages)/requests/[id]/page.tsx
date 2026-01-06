@@ -12,6 +12,7 @@ import {
 import IPBadge from "@/components/(badges)/ip-badge/ip-badge";
 import RequestMethodBadge from "@/components/(badges)/request-method-badge/request-method-badge";
 import RequestParamsBlock from "@/components/(blocks)/request-params-block/request-params-block";
+import { redirect } from "next/navigation";
 
 interface IPageProps {
   params: {
@@ -24,7 +25,7 @@ const Page = async ({ params }: IPageProps) => {
   const request = await GetRequestByID(requestID);
 
   if (!request) {
-    return <p>Request not found</p>;
+    redirect("/404");
   }
 
   const basePath = request.path.split("?")[0];
@@ -34,8 +35,8 @@ const Page = async ({ params }: IPageProps) => {
 
   // WEBHOOK SETTINGS
   const secret = process.env.WEBHOOK_SECRET ?? "";
-  const timestampHeader = process.env.TIMESTAMP_HEADER ?? "";
-  const signatureHeader = process.env.SIGNATURE_HEADER ?? "";
+  const timestampHeader = (process.env.TIMESTAMP_HEADER ?? "").toLowerCase();
+  const signatureHeader = (process.env.SIGNATURE_HEADER ?? "").toLowerCase();
 
   const { timestamp } = await GetRequestTimestamp(
     request.headers ?? [],
@@ -57,7 +58,7 @@ const Page = async ({ params }: IPageProps) => {
         <Spacer size="small" />
         <div className="flex items-center rounded-md px-4 py-2 border gap-2">
           <RequestMethodBadge method={request.method} />
-          <p>{basePath}</p>
+          <p className="text-sm font-medium italic truncate">{basePath}</p>
         </div>
         <Spacer size="small" />
         <RequestHeadersBlock headers={request.headers ?? []} />
